@@ -1,0 +1,179 @@
+config_version = 15
+
+[bar.default]
+background_opacity = 0.9499999787658453
+center = [ "clock", "wallpaper" ]
+concave_edge_corners = false
+end = [ "tray", "notifications", "clipboard", "network", "bluetooth", "volume", "brightness", "battery", "session" ]
+hover_highlight = false
+margin_edge = 5
+show_tooltip = false
+start = [ "workspaces", "launcher", "keybinds", "audio_visualizer" ]
+
+[brightness]
+enable_ddcutil = true
+
+[control_center.calendar]
+show_events_card = false
+
+[desktop_widgets]
+enabled = false
+schema_version = 2
+widget_order = []
+
+    [desktop_widgets.grid]
+    cell_size = 16
+    major_interval = 4
+    visible = true
+
+    [desktop_widgets.widget]
+
+[idle]
+behavior_order = [ "lock", "screen-off", "lock-and-suspend" ]
+
+    [idle.behavior.lock]
+    action = "lock"
+    enabled = true
+    timeout = 600.0
+
+    [idle.behavior.lock-and-suspend]
+    action = "lock_and_suspend"
+    enabled = false
+    timeout = 900.0
+
+    [idle.behavior.screen-off]
+    action = "screen_off"
+    enabled = true
+    timeout = 660.0
+
+[location]
+auto_locate = true
+
+[lockscreen]
+fingerprint = false
+transition = [ "fade" ]
+transition_duration = 500
+
+[lockscreen_widgets]
+enabled = true
+schema_version = 2
+widget_order = ["lockscreen-login-box@FALLBACK"]
+
+    [lockscreen_widgets.grid]
+    cell_size = 16
+    major_interval = 4
+    visible = true
+
+    [lockscreen_widgets.widget."lockscreen-login-box@FALLBACK"]
+    box_height = 70.0
+    box_width = 400.0
+    cx = 960.0
+    cy = 898.0
+    output = "FALLBACK"
+    placement_height = 1080.0
+    placement_width = 1920.0
+    rotation = 0.0
+    type = "login_box"
+
+        [lockscreen_widgets.widget."lockscreen-login-box@FALLBACK".settings]
+        background_color = "surface_variant"
+        background_opacity = 0.95000000000000007
+        background_radius = 12.0
+        center_password_text = false
+        input_opacity = 0.95000000000000007
+        input_radius = 6.0
+        layout = "compact"
+        show_caps_lock = true
+        show_keyboard_layout = true
+        show_login_button = true
+        show_media = true
+        show_password_reveal = true
+        show_session_buttons = true
+        show_unlock_hint = true
+        show_weather = true
+
+[plugin_settings."kenn/keybind-cheatsheet"]
+cheatsheet_placement = "attached"
+merge_sequential = true
+
+[plugin_settings."noctalia/notes"]
+panel_open_near_click = true
+panel_placement = "attached"
+
+[plugin_settings."noctalia/wallhaven"]
+api_key = ""
+download_dir = "__HOME__/Pictures/Wallpapers"
+
+[plugins]
+enabled = [ "kenn/keybind-cheatsheet" ]
+
+[shell]
+niri_overview_type_to_launch_enabled = true
+polkit_agent = true
+time_format = "{:%I:%M %p}"
+
+    [shell.greeter_sync]
+    auto_sync = true
+
+    [shell.launcher]
+    categories = false
+    category_icons_only = true
+    layout = "simple"
+    sort_by_usage = false
+    track_usage = false
+
+    [shell.panel]
+    clipboard_placement = "attached"
+    launcher_placement = "attached"
+    open_near_click_clipboard = true
+    open_near_click_control_center = true
+    open_near_click_launcher = true
+    open_near_click_session = false
+    open_near_click_wallpaper = true
+    polkit_placement = "attached"
+    session_placement = "floating"
+    session_position = "center"
+
+    [shell.screenshot]
+    annotate = true
+    save_to_file = false
+
+[theme]
+builtin = "Eldritch"
+community_palette = "Paradise"
+source = "community"
+
+    [theme.templates]
+    builtin_ids = [ "alacritty", "btop", "gtk3", "gtk4", "kcolorscheme", "niri", "qt", "starship" ]
+    community_ids = [ "codex", "zen-browser", "steam", "papirus-icons", "bat", "fzf" ]
+
+[wallpaper]
+directory = "__HOME__/Pictures/Wallpapers"
+directory_dark = "__HOME__/Pictures/Wallpapers"
+directory_light = "__HOME__/Pictures/Wallpapers"
+
+    [wallpaper.default]
+    path = "__HOME__/Pictures/Wallpapers/000.jpg"
+
+    [wallpaper.last]
+    path = "__HOME__/Pictures/Wallpapers/000.jpg"
+
+[widget.audio_visualizer]
+bands = 128
+color_2 = "secondary"
+mirrored = false
+show_when_idle = true
+width = 128
+
+    [widget.audio_visualizer.actions]
+    left = "panel-toggle control-center media"
+
+[widget.clock]
+format = "{:%I:%M %p}"
+
+[widget.keybinds]
+type = "kenn/keybind-cheatsheet:keybinds"
+
+[widget.tray]
+drawer = true
+match_adjacent_spacing = true
