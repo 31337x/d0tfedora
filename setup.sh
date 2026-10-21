@@ -42,7 +42,7 @@ This setup will:
   • Install full FFmpeg; configure power profiles and NetworkManager.
   • Install the user's Niri config and greetd's config.
   • Apply the full saved Niri and Noctalia settings, with automatic displays.
-  • Install Bash, Fastfetch and Paradise fzf colors.
+  • Install Bash, Fastfetch, Codex CLI and Noctalia colors.
   • Copy wallpapers to ~/Pictures/Wallpapers and restore selections.
   • Install the bundled keybind cheatsheet plugin for Mod+K.
   • Hide Noctalia's launcher entry and rename MPV's launcher entry.
@@ -119,6 +119,9 @@ tomllib.loads(text)
 pathlib.Path(sys.argv[2]).write_text(text)
 PY
 noctalia config validate "$STAGE/settings.toml"
+# Install Codex as the desktop user, without Node.js or npm.
+curl --fail --location --retry 3 'https://chatgpt.com/codex/install.sh' -o "$STAGE/install-codex.sh"
+sh "$STAGE/install-codex.sh"
 mkdir -p "$HOME/.config/fastfetch"
 install -m 0644 "$SCRIPT_DIR/config/bash/bashrc" "$HOME/.bashrc"
 install -m 0644 "$SCRIPT_DIR/config/fastfetch/config.jsonc" "$HOME/.config/fastfetch/config.jsonc"
@@ -132,9 +135,16 @@ cp -a "$SCRIPT_DIR/assets/plugins/materialized/community/keybind-cheatsheet/." "
 install -m 0600 "$STAGE/settings.toml" "$HOME/.local/state/noctalia/settings.toml"
 mkdir -p "$HOME/.config/noctalia"
 install -m 0644 "$SCRIPT_DIR/config/noctalia/bar-labels.toml" "$HOME/.config/noctalia/bar-labels.toml"
-mkdir -p "$HOME/.local/state/noctalia/community-palettes" "$HOME/.config/fzf/themes"
-install -m 0644 "$SCRIPT_DIR/assets/community-palettes/Paradise.json" "$HOME/.local/state/noctalia/community-palettes/Paradise.json"
-install -m 0644 "$SCRIPT_DIR/config/fzf/noctalia.sh" "$HOME/.config/fzf/themes/noctalia.sh"
+mkdir -p "$HOME/.local/state/noctalia/community-palettes"
+install -m 0644 "$SCRIPT_DIR/assets/community-palettes/Kitten.json" "$HOME/.local/state/noctalia/community-palettes/Kitten.json"
+TEMPLATE_DIR="$HOME/.local/state/noctalia/community-templates"
+mkdir -p "$TEMPLATE_DIR" "$HOME/.codex/themes" "$HOME/.config/fzf/themes"
+cp -a "$SCRIPT_DIR/assets/community-templates/." "$TEMPLATE_DIR/"
+noctalia theme --theme-json "$SCRIPT_DIR/assets/community-palettes/Kitten.json" \
+    --default-mode dark \
+    -r "$TEMPLATE_DIR/codex/codex.tmTheme:$HOME/.codex/themes/noctalia.tmTheme" \
+    -r "$TEMPLATE_DIR/fzf/fzf.sh:$HOME/.config/fzf/themes/noctalia.sh" > /dev/null
+python3 "$SCRIPT_DIR/scripts/configure-codex.py" "$HOME/.codex/config.toml"
 install -m 0644 "$SCRIPT_DIR/config/alacritty/alacritty.toml" "$HOME/.config/alacritty/alacritty.toml"
 mkdir -p "$HOME/.config/niri" "$HOME/.local/share/applications" "$HOME/.local/share/fonts"
 install -m 0644 "$STAGE/"*.kdl "$HOME/.config/niri/"
@@ -214,7 +224,7 @@ PY
 GREETER_WALLPAPER="/var/lib/noctalia-greeter/wallpaper.${MAIN_WALLPAPER##*.}"
 sudo install -o "$GREETER_USER" -g "$GREETER_GROUP" -m 0640 "$MAIN_WALLPAPER" "$GREETER_WALLPAPER"
 sudo python3 "$SCRIPT_DIR/scripts/seed-greeter.py" \
-    "$SCRIPT_DIR/assets/community-palettes/Paradise.json" \
+    "$SCRIPT_DIR/assets/community-palettes/Kitten.json" \
     /var/lib/noctalia-greeter/sync.toml "$GREETER_WALLPAPER"
 sudo chown "$GREETER_USER:$GREETER_GROUP" /var/lib/noctalia-greeter/sync.toml
 sudo chmod 0640 /var/lib/noctalia-greeter/sync.toml

@@ -1,6 +1,6 @@
 # d0tFedora
 
-A minimal Fedora desktop with Niri, Noctalia, Paradise colors and the keybind cheatsheet.
+A minimal Fedora desktop with Niri, Noctalia, Kitten colors, Codex CLI and the keybind cheatsheet.
 
 Requires a fresh **Fedora Minimal 44+** installation, internet and sudo access. Fedora Atomic is unsupported.
 
