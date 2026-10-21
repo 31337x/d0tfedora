@@ -16,6 +16,4 @@ Run as your regular user. Reboot when finished and select **Niri**.
 
 Options: `--dry-run`, `--yes`, `--quiet-boot`, `--intel-wifi`, `--help`.
 
-Setup overwrites bundled configuration targets without backups and finishes with `dnf autoremove -y`.
-
 [Keybinds](KEYBINDS.md) · [Validation](VALIDATION.md) · [Assets](SHARING-REVIEW.md)
