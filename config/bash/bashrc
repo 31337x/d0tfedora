@@ -44,7 +44,6 @@ alias ...='cd ../..'
 alias ebrc='$EDITOR "$HOME/.bashrc"'
 
 # Fuzzy file picker: preview files, then open the selection in nano.
-unalias ff 2>/dev/null
 ff() {
     local selected_file
     selected_file=$(fzf --preview 'bat --style=numbers --color=always -- {}') || return
@@ -56,7 +55,10 @@ ff() {
 
 command -v starship >/dev/null 2>&1 && eval "$(starship init bash)"
 
-# Optional integrations.
+# Shell integrations.
+fzf_theme="${XDG_CONFIG_HOME:-$HOME/.config}/fzf/themes/noctalia.sh"
+[[ ! -r $fzf_theme ]] || source "$fzf_theme"
+unset fzf_theme
 command -v fzf >/dev/null 2>&1 && eval "$(fzf --bash)"
 if command -v zoxide >/dev/null 2>&1; then
     eval "$(zoxide init bash)"

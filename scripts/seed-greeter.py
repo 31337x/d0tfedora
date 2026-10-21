@@ -34,8 +34,7 @@ def dump(table, prefix=()):
     return '\n'.join(lines)
 
 
-def seed(settings_path, palette_path, target_path, wallpaper):
-    settings = tomllib.loads(pathlib.Path(settings_path).read_text())
+def seed(palette_path, target_path, wallpaper):
     palette = json.loads(pathlib.Path(palette_path).read_text())['dark']
     target = pathlib.Path(target_path)
     state = tomllib.loads(target.read_text()) if target.exists() else {}
@@ -46,10 +45,7 @@ def seed(settings_path, palette_path, target_path, wallpaper):
         for k, v in palette.items() if k.startswith('m') and isinstance(v, str)
     }
     appearance['wallpaper'] = {'path': wallpaper, 'fill_mode': 'crop'}
-    appearance['wallpapers'] = {
-        name: {'path': wallpaper, 'fill_mode': 'crop'}
-        for name in settings.get('wallpaper', {}).get('monitors', {})
-    }
+    appearance.pop('wallpapers', None)
     text = dump(state) + '\n'
     tomllib.loads(text)
     target.write_text(text)

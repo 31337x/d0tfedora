@@ -1,7 +1,7 @@
 config_version = 15
 
 [bar.default]
-background_opacity = 0.9499999787658453
+background_opacity = 0.95
 center = [ "clock", "wallpaper" ]
 concave_edge_corners = false
 end = [ "tray", "notifications", "clipboard", "network", "bluetooth", "volume", "brightness", "battery", "session" ]
@@ -18,28 +18,14 @@ show_events_card = false
 
 [desktop_widgets]
 enabled = false
-schema_version = 2
-widget_order = []
-
-    [desktop_widgets.grid]
-    cell_size = 16
-    major_interval = 4
-    visible = true
-
-    [desktop_widgets.widget]
 
 [idle]
-behavior_order = [ "lock", "screen-off", "lock-and-suspend" ]
+behavior_order = [ "lock", "screen-off" ]
 
     [idle.behavior.lock]
     action = "lock"
     enabled = true
     timeout = 600.0
-
-    [idle.behavior.lock-and-suspend]
-    action = "lock_and_suspend"
-    enabled = false
-    timeout = 900.0
 
     [idle.behavior.screen-off]
     action = "screen_off"
@@ -77,10 +63,10 @@ widget_order = ["lockscreen-login-box@FALLBACK"]
 
         [lockscreen_widgets.widget."lockscreen-login-box@FALLBACK".settings]
         background_color = "surface_variant"
-        background_opacity = 0.95000000000000007
+        background_opacity = 0.95
         background_radius = 12.0
         center_password_text = false
-        input_opacity = 0.95000000000000007
+        input_opacity = 0.95
         input_radius = 6.0
         layout = "compact"
         show_caps_lock = true
@@ -93,16 +79,7 @@ widget_order = ["lockscreen-login-box@FALLBACK"]
         show_weather = true
 
 [plugin_settings."kenn/keybind-cheatsheet"]
-cheatsheet_placement = "attached"
 merge_sequential = true
-
-[plugin_settings."noctalia/notes"]
-panel_open_near_click = true
-panel_placement = "attached"
-
-[plugin_settings."noctalia/wallhaven"]
-api_key = ""
-download_dir = "__HOME__/Pictures/Wallpapers"
 
 [plugins]
 enabled = [ "kenn/keybind-cheatsheet" ]
@@ -117,7 +94,6 @@ time_format = "{:%I:%M %p}"
 
     [shell.launcher]
     categories = false
-    category_icons_only = true
     layout = "simple"
     sort_by_usage = false
     track_usage = false
@@ -139,13 +115,12 @@ time_format = "{:%I:%M %p}"
     save_to_file = false
 
 [theme]
-builtin = "Eldritch"
 community_palette = "Paradise"
 source = "community"
 
     [theme.templates]
     builtin_ids = [ "alacritty", "btop", "gtk3", "gtk4", "kcolorscheme", "niri", "qt", "starship" ]
-    community_ids = [ "codex", "zen-browser", "steam", "papirus-icons", "bat", "fzf" ]
+    community_ids = []
 
 [wallpaper]
 directory = "__HOME__/Pictures/Wallpapers"
@@ -153,9 +128,6 @@ directory_dark = "__HOME__/Pictures/Wallpapers"
 directory_light = "__HOME__/Pictures/Wallpapers"
 
     [wallpaper.default]
-    path = "__HOME__/Pictures/Wallpapers/000.jpg"
-
-    [wallpaper.last]
     path = "__HOME__/Pictures/Wallpapers/000.jpg"
 
 [widget.audio_visualizer]

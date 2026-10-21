@@ -41,8 +41,8 @@ This setup will:
   • Install GNOME Keyring login integration and Passwords and Keys.
   • Install full FFmpeg; configure power profiles and NetworkManager.
   • Install the user's Niri config and greetd's config.
-  • Apply the full saved Niri and Noctalia settings, with automatic display modes and placement.
-  • Install the saved Bash and Fastfetch configs.
+  • Apply the full saved Niri and Noctalia settings, with automatic displays.
+  • Install Bash, Fastfetch and Paradise fzf colors.
   • Copy wallpapers to ~/Pictures/Wallpapers and restore selections.
   • Install the bundled keybind cheatsheet plugin for Mod+K.
   • Hide Noctalia's launcher entry and rename MPV's launcher entry.
@@ -85,7 +85,7 @@ packages=(
     pipewire-alsa xdg-desktop-portal-gnome xdg-desktop-portal-gtk
     # greetd already includes PAM hooks; this module unlocks the keyring at login.
     xdg-user-dirs polkit gnome-keyring gnome-keyring-pam seahorse accountsservice
-    wl-clipboard xwayland-satellite linux-firmware
+    wl-clipboard xwayland-satellite linux-firmware firewalld
 )
 "${DNF[@]}" install "${packages[@]}"
 # Replace an existing PPD provider instead of installing conflicting daemons.
@@ -110,23 +110,7 @@ fi
 STAGE=$(mktemp -d)
 trap 'rm -rf -- "$STAGE"' EXIT
 cp "$SCRIPT_DIR/config/niri/"*.kdl "$STAGE/"
-python3 - "$STAGE/config.kdl" <<'PY'
-import glob, json, pathlib, sys
-# Include disconnected connectors too, so plugging a display into those ports
-# later keeps scale 1. Leave modes and positions entirely to Niri.
-names = sorted({pathlib.Path(p).name.split('-', 1)[1]
-                for p in glob.glob('/sys/class/drm/card*-*')
-                if pathlib.Path(p, 'status').exists()})
-with open(sys.argv[1], 'a') as f:
-    for name in names:
-        f.write('\noutput ' + json.dumps(name) + ' {\n    scale 1\n}\n')
-PY
 niri validate --config "$STAGE/config.kdl"
-noctalia config validate "$SCRIPT_DIR/config/noctalia/settings.toml"
-mkdir -p "$HOME/.config/fastfetch"
-install -m 0644 "$SCRIPT_DIR/config/bash/bashrc" "$HOME/.bashrc"
-install -m 0644 "$SCRIPT_DIR/config/fastfetch/config.jsonc" "$HOME/.config/fastfetch/config.jsonc"
-mkdir -p "$HOME/.local/state/noctalia" "$HOME/.config/alacritty"
 python3 - "$SCRIPT_DIR/config/noctalia/settings.toml" "$STAGE/settings.toml" "$HOME" <<'PY'
 import json, pathlib, sys, tomllib
 text = pathlib.Path(sys.argv[1]).read_text()
@@ -135,6 +119,10 @@ tomllib.loads(text)
 pathlib.Path(sys.argv[2]).write_text(text)
 PY
 noctalia config validate "$STAGE/settings.toml"
+mkdir -p "$HOME/.config/fastfetch"
+install -m 0644 "$SCRIPT_DIR/config/bash/bashrc" "$HOME/.bashrc"
+install -m 0644 "$SCRIPT_DIR/config/fastfetch/config.jsonc" "$HOME/.config/fastfetch/config.jsonc"
+mkdir -p "$HOME/.local/state/noctalia" "$HOME/.config/alacritty"
 # Install the bundled wallpaper library.
 mkdir -p "$HOME/Pictures/Wallpapers"
 cp -a "$SCRIPT_DIR/assets/Wallpapers/." "$HOME/Pictures/Wallpapers/"
@@ -144,10 +132,9 @@ cp -a "$SCRIPT_DIR/assets/plugins/materialized/community/keybind-cheatsheet/." "
 install -m 0600 "$STAGE/settings.toml" "$HOME/.local/state/noctalia/settings.toml"
 mkdir -p "$HOME/.config/noctalia"
 install -m 0644 "$SCRIPT_DIR/config/noctalia/bar-labels.toml" "$HOME/.config/noctalia/bar-labels.toml"
-for directory in community-palettes community-templates; do
-    mkdir -p "$HOME/.local/state/noctalia/$directory"
-    cp -a "$SCRIPT_DIR/assets/$directory/." "$HOME/.local/state/noctalia/$directory/"
-done
+mkdir -p "$HOME/.local/state/noctalia/community-palettes" "$HOME/.config/fzf/themes"
+install -m 0644 "$SCRIPT_DIR/assets/community-palettes/Paradise.json" "$HOME/.local/state/noctalia/community-palettes/Paradise.json"
+install -m 0644 "$SCRIPT_DIR/config/fzf/noctalia.sh" "$HOME/.config/fzf/themes/noctalia.sh"
 install -m 0644 "$SCRIPT_DIR/config/alacritty/alacritty.toml" "$HOME/.config/alacritty/alacritty.toml"
 mkdir -p "$HOME/.config/niri" "$HOME/.local/share/applications" "$HOME/.local/share/fonts"
 install -m 0644 "$STAGE/"*.kdl "$HOME/.config/niri/"
@@ -196,38 +183,26 @@ printf 'd /var/lib/noctalia-greeter 0750 %s %s -\n' "$GREETER_USER" "$GREETER_GR
 sudo install -m 0644 "$STAGE/tmpfiles.conf" /etc/tmpfiles.d/noctalia-greeter.conf
 sudo systemd-tmpfiles --create noctalia-greeter.conf
 sudo env GREETER_USER="$GREETER_USER" noctalia-greeter-apply-appearance --setup-system
-# Edit only the appearance.hide_logo setting; preserve all other greeter options.
-sudo python3 - <<'PY'
+# Preserve greeter options while selecting the seeded appearance.
+sudo python3 - <<'PYCODE'
 import pathlib, re, tomllib
 p = pathlib.Path('/var/lib/noctalia-greeter/greeter.toml')
 s = p.read_text()
-section = re.search(r'(?m)^\[appearance\][ \t]*$', s)
-if section:
-    start = section.end()
-    following = re.search(r'(?m)^\[', s[start:])
-    end = start + following.start() if following else len(s)
-    block = s[start:end]
-    if re.search(r'(?m)^\s*hide_logo\s*=', block):
-        block = re.sub(r'(?m)^[ \t]*hide_logo\s*=.*$', 'hide_logo = true', block)
-    else:
-        block = '\nhide_logo = true\n' + block
-    s = s[:start] + block + s[end:]
-else:
-    s += '\n[appearance]\nhide_logo = true\n'
-# Explicitly select the seeded palette instead of a packaged built-in scheme.
+if not re.search(r'(?m)^\[appearance\][ \t]*$', s):
+    s += '\n[appearance]\n'
 section = re.search(r'(?m)^\[appearance\][ \t]*$', s)
 start = section.end()
 following = re.search(r'(?m)^\[', s[start:])
 end = start + following.start() if following else len(s)
 block = s[start:end]
-if re.search(r'(?m)^[ \t]*scheme\s*=', block):
-    block = re.sub(r'(?m)^[ \t]*scheme\s*=.*$', 'scheme = "Synced"', block)
-else:
-    block = '\nscheme = "Synced"\n' + block
+for key, value in [('hide_logo', 'true'), ('scheme', '"Synced"')]:
+    pattern = r'(?m)^[ \t]*' + key + r'\s*=.*$'
+    line = key + ' = ' + value
+    block = re.sub(pattern, line, block) if re.search(pattern, block) else '\n' + line + '\n' + block
 s = s[:start] + block + s[end:]
 tomllib.loads(s)
 p.write_text(s)
-PY
+PYCODE
 # Seed synchronized appearance before the first login. Future Noctalia syncs
 # update sync.toml; no fixed wallpaper/palette override is added to greeter.toml.
 MAIN_WALLPAPER=$(python3 - "$STAGE/settings.toml" <<'PY'
@@ -239,7 +214,7 @@ PY
 GREETER_WALLPAPER="/var/lib/noctalia-greeter/wallpaper.${MAIN_WALLPAPER##*.}"
 sudo install -o "$GREETER_USER" -g "$GREETER_GROUP" -m 0640 "$MAIN_WALLPAPER" "$GREETER_WALLPAPER"
 sudo python3 "$SCRIPT_DIR/scripts/seed-greeter.py" \
-    "$STAGE/settings.toml" "$SCRIPT_DIR/assets/community-palettes/Paradise.json" \
+    "$SCRIPT_DIR/assets/community-palettes/Paradise.json" \
     /var/lib/noctalia-greeter/sync.toml "$GREETER_WALLPAPER"
 sudo chown "$GREETER_USER:$GREETER_GROUP" /var/lib/noctalia-greeter/sync.toml
 sudo chmod 0640 /var/lib/noctalia-greeter/sync.toml
@@ -269,7 +244,7 @@ p.write_text(s)
 PY
     sudo grub2-mkconfig -o /boot/grub2/grub.cfg
 fi
-sudo systemctl enable --now NetworkManager tuned tuned-ppd accounts-daemon
+sudo systemctl enable --now NetworkManager tuned tuned-ppd accounts-daemon firewalld
 # Enable these for the next login; a TTY may have no user bus yet.
 systemctl --user enable pipewire.socket pipewire-pulse.socket wireplumber.service
 sudo systemctl enable greetd.service
@@ -282,4 +257,4 @@ sudo firewall-cmd --reload
 sudo dnf autoremove -y
 printf '\nSetup complete.\n'
 printf 'Reboot when ready, choose Niri, then configure Noctalia appearance.\n'
-printf 'Your wallpapers and Mod+K cheatsheet are included. Other plugins are optional.\n'
+printf 'Your wallpapers and Mod+K cheatsheet are included.\n'
