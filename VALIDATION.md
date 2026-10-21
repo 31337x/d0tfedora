@@ -10,5 +10,3 @@ Cleanup checks:
 - Paradise fzf options load and are accepted by fzf.
 - Greeter seed generation preserves unrelated settings and removes stale monitor assignments.
 - Cheatsheet files and all keyboard shortcuts remain intact.
-
-Not tested end to end: a fresh Fedora installation, package resolution/downloads/removals, reboot, authentication, first-session appearance or later greeter sync. Checks do not install packages or modify the active desktop.
