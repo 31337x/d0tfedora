@@ -16,4 +16,4 @@ Run as your regular user. Reboot when finished and select **Niri**.
 
 Options: `--dry-run`, `--yes`, `--quiet-boot`, `--intel-wifi`, `--help`.
 
-[Keybinds](KEYBINDS.md) · [Validation](VALIDATION.md) · [Assets](SHARING-REVIEW.md)
+[Keybinds](KEYBINDS.md) · [Validation](VALIDATION.md)
