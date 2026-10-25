@@ -12,3 +12,4 @@ Cleanup checks:
 - Cheatsheet files and all keyboard shortcuts remain intact.
 - Codex theme selection preserves existing settings and is unchanged on reruns.
 - The bundled Codex template renders valid Noctalia syntax colors from Last Horizon.
+- Lock screen widgets, monitor placements, fade and idle timers match the saved desktop configuration; avatar and wallpaper use installer-expanded home paths.
