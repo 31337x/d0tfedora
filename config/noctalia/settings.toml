@@ -115,8 +115,10 @@ time_format = "{:%I:%M %p}"
     save_to_file = false
 
 [theme]
-community_palette = "Kitten"
-source = "community"
+custom_palette = "Last Horizon"
+source = "custom"
+mode = "dark"
+shell_mode = "dark"
 
     [theme.templates]
     builtin_ids = [ "alacritty", "btop", "gtk3", "gtk4", "kcolorscheme", "niri", "qt", "starship" ]

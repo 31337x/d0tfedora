@@ -1,6 +1,8 @@
 # d0tFedora
 
-A minimal Fedora desktop with Niri, Noctalia, Kitten colors, Codex CLI and the keybind cheatsheet.
+A minimal Fedora desktop with Niri, Noctalia, Last Horizon colors, Codex CLI and the keybind cheatsheet.
+
+Includes the custom Noctalia palettes **Last Horizon** (default), **Banish**, **Batou**, **Harbor**, **Mecha no Onna** and **Solitude**. Setup installs them to `~/.config/noctalia/palettes`; select them in Noctalia’s custom palette picker. Last Horizon also seeds app colors and the greeter.
 
 Requires a fresh **Fedora Minimal 44+** installation, internet and sudo access. Fedora Atomic is unsupported.
 

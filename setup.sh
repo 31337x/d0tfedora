@@ -135,12 +135,15 @@ cp -a "$SCRIPT_DIR/assets/plugins/materialized/community/keybind-cheatsheet/." "
 install -m 0600 "$STAGE/settings.toml" "$HOME/.local/state/noctalia/settings.toml"
 mkdir -p "$HOME/.config/noctalia"
 install -m 0644 "$SCRIPT_DIR/config/noctalia/bar-labels.toml" "$HOME/.config/noctalia/bar-labels.toml"
+mkdir -p "$HOME/.config/noctalia/palettes"
+cp -a "$SCRIPT_DIR/config/noctalia/palettes/." "$HOME/.config/noctalia/palettes/"
+DEFAULT_PALETTE="$SCRIPT_DIR/config/noctalia/palettes/Last Horizon.json"
 mkdir -p "$HOME/.local/state/noctalia/community-palettes"
 install -m 0644 "$SCRIPT_DIR/assets/community-palettes/Kitten.json" "$HOME/.local/state/noctalia/community-palettes/Kitten.json"
 TEMPLATE_DIR="$HOME/.local/state/noctalia/community-templates"
 mkdir -p "$TEMPLATE_DIR" "$HOME/.codex/themes" "$HOME/.config/fzf/themes"
 cp -a "$SCRIPT_DIR/assets/community-templates/." "$TEMPLATE_DIR/"
-noctalia theme --theme-json "$SCRIPT_DIR/assets/community-palettes/Kitten.json" \
+noctalia theme --theme-json "$DEFAULT_PALETTE" \
     --default-mode dark \
     -r "$TEMPLATE_DIR/codex/codex.tmTheme:$HOME/.codex/themes/noctalia.tmTheme" \
     -r "$TEMPLATE_DIR/fzf/fzf.sh:$HOME/.config/fzf/themes/noctalia.sh" > /dev/null
@@ -224,7 +227,7 @@ PY
 GREETER_WALLPAPER="/var/lib/noctalia-greeter/wallpaper.${MAIN_WALLPAPER##*.}"
 sudo install -o "$GREETER_USER" -g "$GREETER_GROUP" -m 0640 "$MAIN_WALLPAPER" "$GREETER_WALLPAPER"
 sudo python3 "$SCRIPT_DIR/scripts/seed-greeter.py" \
-    "$SCRIPT_DIR/assets/community-palettes/Kitten.json" \
+    "$DEFAULT_PALETTE" \
     /var/lib/noctalia-greeter/sync.toml "$GREETER_WALLPAPER"
 sudo chown "$GREETER_USER:$GREETER_GROUP" /var/lib/noctalia-greeter/sync.toml
 sudo chmod 0640 /var/lib/noctalia-greeter/sync.toml
