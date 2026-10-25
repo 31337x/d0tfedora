@@ -149,6 +149,8 @@ noctalia theme --theme-json "$DEFAULT_PALETTE" \
     -r "$TEMPLATE_DIR/fzf/fzf.sh:$HOME/.config/fzf/themes/noctalia.sh" > /dev/null
 python3 "$SCRIPT_DIR/scripts/configure-codex.py" "$HOME/.codex/config.toml"
 install -m 0644 "$SCRIPT_DIR/config/alacritty/alacritty.toml" "$HOME/.config/alacritty/alacritty.toml"
+mkdir -p "$HOME/.local/bin"
+install -m 0755 "$SCRIPT_DIR/scripts/noctalia-start.py" "$HOME/.local/bin/noctalia-start.py"
 mkdir -p "$HOME/.config/niri" "$HOME/.local/share/applications" "$HOME/.local/share/fonts"
 install -m 0644 "$STAGE/"*.kdl "$HOME/.config/niri/"
 xdg-user-dirs-update

@@ -13,3 +13,4 @@ Cleanup checks:
 - Codex theme selection preserves existing settings and is unchanged on reruns.
 - The bundled Codex template renders valid Noctalia syntax colors from Last Horizon.
 - Lock screen widgets, monitor placements, fade and idle timers match the saved desktop configuration; avatar and wallpaper use installer-expanded home paths.
+- Startup seeding creates compact boxes for unfamiliar landscape and portrait outputs, updates widget order, preserves existing settings and is unchanged on reruns.

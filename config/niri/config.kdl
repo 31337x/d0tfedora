@@ -55,7 +55,7 @@ layout {
     }
 }
 
-spawn-at-startup "noctalia"
+spawn-at-startup "sh" "-c" "exec python3 \"$HOME/.local/bin/noctalia-start.py\""
 
 hotkey-overlay {
     skip-at-startup
