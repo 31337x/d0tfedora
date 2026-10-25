@@ -45,7 +45,7 @@ This setup will:
   • Install Bash, Fastfetch, Codex CLI and Noctalia colors.
   • Copy wallpapers to ~/Pictures/Wallpapers and restore selections.
   • Install the bundled keybind cheatsheet plugin for Mod+K.
-  • Hide Noctalia's launcher entry and rename MPV's launcher entry.
+  • Hide Noctalia's launcher entry and rename MPV and Btop++ launcher entries.
   • Enable greetd for the next boot.
   • Finish with sudo dnf autoremove -y to remove unneeded packages.
 Existing sessions are not stopped. Waybar, swaylock and fuzzel are removed; GNOME Keyring stays. No automatic reboot.
@@ -163,6 +163,9 @@ NoDisplay=true
 DESKTOP
 if [[ -f /usr/share/applications/mpv.desktop ]]; then
     sed 's/^Name=.*/Name=MPV Media Player/' /usr/share/applications/mpv.desktop > "$HOME/.local/share/applications/mpv.desktop"
+fi
+if [[ -f /usr/share/applications/btop.desktop ]]; then
+    sed 's/^Name=.*/Name=Btop++/' /usr/share/applications/btop.desktop > "$HOME/.local/share/applications/btop.desktop"
 fi
 update-desktop-database "$HOME/.local/share/applications"
 FONT="$HOME/.local/share/fonts/JetBrainsMonoNLNerdFontMono-Regular.ttf"
