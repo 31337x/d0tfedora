@@ -6,6 +6,7 @@ Current Niri and Noctalia settings sync:
 - Merged Noctalia configuration validates with zero warnings.
 - All bundled settings JSON and TOML parse successfully.
 - Installer passes Bash syntax checking.
+- No fixed Niri output modes, named lock-screen outputs, or per-monitor wallpaper assignments are saved.
 - Home paths use installer-expanded `__HOME__` placeholders.
 - Installer copies the soft-border template and all Niri includes; the Steam community template is bundled.
 

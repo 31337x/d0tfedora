@@ -41,7 +41,7 @@ This setup will:
   • Install GNOME Keyring login integration and Passwords and Keys.
   • Install full FFmpeg; configure power profiles and NetworkManager.
   • Install the user's Niri config and greetd's config.
-  • Apply the full saved Niri and Noctalia settings, including the saved DP-2 display mode.
+  • Apply the full saved Niri and Noctalia settings, with automatic display detection.
   • Install Bash, Fastfetch, Codex CLI and Noctalia colors.
   • Copy wallpapers to ~/Pictures/Wallpapers and restore selections.
   • Install the bundled keybind cheatsheet plugin for Mod+K.
