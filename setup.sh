@@ -41,7 +41,7 @@ This setup will:
   • Install GNOME Keyring login integration and Passwords and Keys.
   • Install full FFmpeg; configure power profiles and NetworkManager.
   • Install the user's Niri config and greetd's config.
-  • Apply the full saved Niri and Noctalia settings, with automatic displays.
+  • Apply the full saved Niri and Noctalia settings, including the saved DP-2 display mode.
   • Install Bash, Fastfetch, Codex CLI and Noctalia colors.
   • Copy wallpapers to ~/Pictures/Wallpapers and restore selections.
   • Install the bundled keybind cheatsheet plugin for Mod+K.
@@ -135,6 +135,8 @@ cp -a "$SCRIPT_DIR/assets/plugins/materialized/community/keybind-cheatsheet/." "
 install -m 0600 "$STAGE/settings.toml" "$HOME/.local/state/noctalia/settings.toml"
 mkdir -p "$HOME/.config/noctalia"
 install -m 0644 "$SCRIPT_DIR/config/noctalia/bar-labels.toml" "$HOME/.config/noctalia/bar-labels.toml"
+mkdir -p "$HOME/.config/noctalia/templates"
+install -m 0644 "$SCRIPT_DIR/config/noctalia/templates/"* "$HOME/.config/noctalia/templates/"
 mkdir -p "$HOME/.config/noctalia/palettes"
 cp -a "$SCRIPT_DIR/config/noctalia/palettes/." "$HOME/.config/noctalia/palettes/"
 DEFAULT_PALETTE="$SCRIPT_DIR/config/noctalia/palettes/Last Horizon.json"
@@ -276,3 +278,4 @@ sudo dnf autoremove -y
 printf '\nSetup complete.\n'
 printf 'Reboot when ready, choose Niri, then configure Noctalia appearance.\n'
 printf 'Your wallpapers and Mod+K cheatsheet are included.\n'
+

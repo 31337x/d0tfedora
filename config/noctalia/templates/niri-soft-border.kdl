@@ -1,0 +1,5 @@
+window-rule {
+    border {
+        inactive-color "{{colors.primary.default.hex | lighten: 25}}80"
+    }
+}

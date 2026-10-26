@@ -1,4 +1,8 @@
-// Niri chooses display modes, placement and scale automatically.
+// Use the monitor's advertised 4K 160 Hz mode.
+output "DP-2" {
+    mode "3840x2160@160.000"
+}
+
 input {
     keyboard {
         xkb {
@@ -14,7 +18,7 @@ input {
 }
 
 layout {
-    gaps 16
+    gaps 7
 
     center-focused-column "never"
 
@@ -35,15 +39,18 @@ layout {
     default-column-width { proportion 0.5; }
 
     focus-ring {
-        on
+        off
 
         width 1
     }
 
-    border { off; }
+    border {
+        on
+        width 1
+    }
 
     shadow {
-        on
+        off
 
         softness 30
 
@@ -94,7 +101,7 @@ window-rule {
     clip-to-geometry true
     draw-border-with-background false
     focus-ring {
-        on
+        off
         width 1
     }
 }
@@ -195,4 +202,8 @@ gestures {
     }
 }
 
+
 include "noctalia.kdl"
+
+// A lighter, softer version of the theme accent for inactive windows.
+include "soft-border.kdl"

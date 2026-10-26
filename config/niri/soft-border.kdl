@@ -1,0 +1,5 @@
+window-rule {
+    border {
+        inactive-color "#f2f6fe80"
+    }
+}
